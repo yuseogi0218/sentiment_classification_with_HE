@@ -123,11 +123,6 @@ clear_0001[1024] = 0.0001
 clear_0001[2048] = 0.0001
 clear_0001[3072] = 0.0001
 
-result_check = heaan.Message(log_slots)
-result_check[0] = 1
-result_check[1024] = 2
-result_check[2048] = 2
-
 
 def cosine_similarity_with_HE(arg0):  # arg0 = enc(user_input)
     arg1, sentiment_magnitude = sentiment_embedding_message, sentiment_magnitude_message
@@ -180,8 +175,6 @@ def compare_and_get_result(cosine_similarities):
 
     approx.compare(eval, cosine_similarities, temp_cosine_similarities, cosine_similarities)
 
-    eval.mult(cosine_similarities, result_check, cosine_similarities)
-
     return cosine_similarities
 
 
@@ -211,7 +204,7 @@ def sentiment_classify(sentence):
 
     if (happy == 1 and angry == 0):
         return "happy"
-    elif (happy == 0 and sad == 2):
+    elif (happy == 0 and sad == 1):
         return "sad"
-    elif (happy == 1 and angry == 2) or (happy == 0 and sad == 0):
+    elif (happy == 1 and angry == 1) or (happy == 0 and sad == 0):
         return "angry"
