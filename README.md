@@ -1,17 +1,20 @@
 # Emotional Analysis of Sentences with Homomorphic Encryption
 
-__Contributors__  
-<p>
-    <a href = "https://github.com/yuseogi0218" >
-      <img src = "https://avatars.githubusercontent.com/u/64399505?v=4" width=35px border-radius="50%"/>
-    </a>
-    <a href = "https://github.com/yoouung" >
-      <img src = "https://avatars.githubusercontent.com/u/78146904?v=4" width=35px border-radius="10px" />
-    </a>
-    <a href = "https://github.com/Younggeun97" >
-      <img src = "https://avatars.githubusercontent.com/u/94732122?v=4" width=35px border-radius="5px" />
-    </a>
-</p>
+<div align="center" width="100px">
+    <strong>Contributors</strong>
+    <p style="height: 10px"></p>
+    <p style="justify-content: space-between">
+        <a href = "https://github.com/yuseogi0218">
+          <img src = "https://avatars.githubusercontent.com/u/64399505?v=4" width=35px/>
+        </a>
+        <a href = "https://github.com/yoouung" >
+          <img src = "https://avatars.githubusercontent.com/u/78146904?v=4" width=35px/>
+        </a>
+        <a href = "https://github.com/Younggeun97" >
+          <img src = "https://avatars.githubusercontent.com/u/94732122?v=4" width=35px/>
+        </a>
+    </p>
+</div>
 
 ## Introduction
 ### Idea Proposal
