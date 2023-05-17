@@ -2,6 +2,32 @@
 {% load diary_filter %}
 {% block content %}
 <div class="container my-3">
+    <div style="display:flex; flex-direction:row; justify-content: space-around; height: 300px">
+        <div style="width:280px; height:250px;">
+            <span style="font-weight: bold;">Weekly</span>
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                </div>
+            </div>
+            <canvas id="weekly-pie" style="display: block; height: 150px; width: 248.5;" width="497" height="300" class="chartjs-render-monitor"></canvas>
+        </div>
+        <div style="width:280px; height:250px">
+            <span style="font-weight: bold">Monthly</span>
+            <div class="chartjs-size-monitor">
+                <div class="chartjs-size-monitor-expand">
+                    <div class=""></div>
+                </div>
+                <div class="chartjs-size-monitor-shrink">
+                    <div class=""></div>
+                </div>
+            </div>
+            <canvas id="monthly-pie" style="display: block; height: 150px; width: 248.5px;" width="497" height="300" class="chartjs-render-monitor"></canvas>
+        </div>
+    </div>
     <table class="table">
 
         <thead>
@@ -71,14 +97,9 @@
     </ul>
     <!-- 페이징처리 끝 -->
     <a href="{% url 'diary:diary_create' %}" class="btn btn-primary">일기 등록하기</a>
-    <div >
-        <div style="width:300px; height:300px"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-          <canvas id="weekly-pie" style="display: block; height: 300px; width: 497px;" width="994" height="600" class="chartjs-render-monitor"></canvas>
-        </div>
-        <div style="width:300px; height:300px"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-          <canvas id="monthly-pie" style="display: block; height: 300px; width: 497px;" width="994" height="600" class="chartjs-render-monitor"></canvas>
-        </div>
-    </div>
+
+
+
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", function() {
           new Chart(document.getElementById("weekly-pie"), {
@@ -88,9 +109,9 @@
                   datasets: [{
                       data: ["{{weekly_happy| safe }}", "{{weekly_sad| safe }}", "{{weekly_angry| safe }}"],
                       backgroundColor: [
-                          window.theme.primary,
-                          window.theme.success,
-                          window.theme.warning
+                          "#FFF4D2",
+                          "#2B3467",
+                          "#EB455F"
                       ],
                       borderColor: "transparent"
                   }]
@@ -106,9 +127,9 @@
                   datasets: [{
                       data: ["{{monthly_happy| safe }}", "{{monthly_sad| safe }}", "{{monthly_angry| safe }}"],
                       backgroundColor: [
-                          window.theme.primary,
-                          window.theme.success,
-                          window.theme.warning
+                          "#FFF4D2",
+                          "#2B3467",
+                          "#EB455F"
                       ],
                       borderColor: "transparent"
                   }]
