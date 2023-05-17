@@ -62,6 +62,7 @@ Also, it assumes that the version of python is `3.9`
 ```shell
 % (.venv) python manage.py runserver
 ```
+<br/>
 
 ## How to use
 1. Open Chrome and Access to `localhost:8000/common`.
