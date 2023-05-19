@@ -10,9 +10,9 @@ from .sentiment_analysis import sentiment_analyse
 
 @login_required(login_url='common:login')
 def index(request):
-    page = request.GET.get('page', '1')  # 페이지
+    page = request.GET.get('page', '1')
     diary_list = Diary.objects.filter(author=request.user).order_by('-create_date')
-    paginator = Paginator(diary_list, 10)  # 페이지당 10개씩 보여주기
+    paginator = Paginator(diary_list, 10)
     page_obj = paginator.get_page(page)
     weekly_result, monthly_result = sentiment_analyse(diary_list)
     context = {'diary_list': page_obj,
@@ -30,11 +30,9 @@ def index(request):
 def diary_create(request):
     if request.method == 'POST':
         form = DiaryForm(request.POST)
-        # form에 저장된 subject, content의 값이 올바르지 않다면 form에는 오류 메시지가 저장되고
-        # form.is_valid()가 실패하여 다시 질문 등록 화면을 렌더링 할 것이다.
         if form.is_valid():
             diary = form.save(commit=False)
-            diary.author = request.user  # author 속성에 로그인 계정 저장
+            diary.author = request.user
             diary.create_date = timezone.now()
             diary.sentiment = sentiment_classify(form.cleaned_data['content'])
             diary.save()

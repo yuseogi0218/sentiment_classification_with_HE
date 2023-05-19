@@ -50,7 +50,7 @@ angry_embeddings = []
 
 sentiment_embedding = [0] * 4096
 
-# 각 단어의 벡터를 계산합니다.
+# get embedding of each sentiment words
 for word in happy_words:
     tokens = tokenizer(word, return_tensors='pt', padding=True, truncation=True)
     with torch.no_grad():
@@ -90,6 +90,7 @@ for i in range(len(angry_embedding_list)):
 
 sentiment_magnitude_message = heaan.Message(log_slots)
 
+# make magnitude of sentiment words
 # happy
 sentiment_magnitude_message[0] = math.sqrt(sum([sentiment_embedding[i] ** 2 for i in range(1024)]))
 sentiment_magnitude_message[3072] = math.sqrt(sum([sentiment_embedding[i] ** 2 for i in range(3072, 4096)]))
@@ -130,15 +131,14 @@ def cosine_similarity_with_HE(arg0):  # arg0 = enc(user_input)
     # copy of input message
     eval.rot_sum([arg0, arg0, arg0, arg0], [0, 1024, 2048, 3072], arg0)
 
-    # dot product of arg0, arg1
+    # dot product of enc(user_input) and embedding of sentiment words
     dot_product = heaan.Ciphertext(context)
 
-    # multiplication each cell of arg0 and arg1
+    # multiplication each cell of enc(user_input) and embedding of sentiment words
     eval.mult(arg0, arg1, dot_product)
 
     # sum of result of multiplication
-    # left_rotate_reduce
-    for i in range(log_slots - 3, -1, -1):  # 1024 가 하나의 Sentiment
+    for i in range(log_slots - 3, -1, -1):  # each 1024 cell is for one sentiment
         eval.rot_sum([dot_product, dot_product], [0, 2 ** i], dot_product)
     eval.mult(dot_product, clear_1, dot_product)
 
@@ -152,11 +152,11 @@ def cosine_similarity_with_HE(arg0):  # arg0 = enc(user_input)
     # recover value
     eval.mult(arg0, clear_100, arg0)
 
-    # magnitude * magnitude
+    # magnitude of input message * magnitude of sentiment words
     cosine_similarities = heaan.Ciphertext(context)
     eval.mult(arg0, sentiment_magnitude, cosine_similarities)
 
-    # dot_product / (magnitude1 * magnitude2)
+    # dot_product / (magnitude of input message * magnitude of sentiment words)
     approx.inverse(eval, cosine_similarities, cosine_similarities)
 
     eval.bootstrap(cosine_similarities, cosine_similarities)
@@ -171,14 +171,17 @@ def compare_and_get_result(cosine_similarities):
     dec.decrypt(cosine_similarities, sk, test_result)
 
     temp_cosine_similarities = heaan.Ciphertext(context)
+    # left rotate 1024 for compare (a vs b, b vs c, c vs a)
     eval.left_rotate(cosine_similarities, 1024, temp_cosine_similarities)
 
+    # compare (a vs b, b vs c, c vs a)
     approx.compare(eval, cosine_similarities, temp_cosine_similarities, cosine_similarities)
 
     return cosine_similarities
 
 
 def sentiment_classify(sentence):
+    # get embedding of user input message
     tokens = tokenizer(sentence, return_tensors='pt', padding=True, truncation=True)
     with torch.no_grad():
         model_output = model(**tokens)[0]
@@ -187,7 +190,7 @@ def sentiment_classify(sentence):
     for i in range(len(embedding)):
         embedding_message[i] = embedding[i]
 
-    # encrypt input message embedding
+    # encrypt embedding of user input message
     embedding_ciphertext = heaan.Ciphertext(context)
     enc.encrypt(embedding_message, pk, embedding_ciphertext)
 
@@ -202,6 +205,7 @@ def sentiment_classify(sentence):
     sad = round(result_message[1024].real)
     angry = round(result_message[2048].real)
 
+    # return sentiment of user's diary input
     if (happy == 1 and angry == 0):
         return "happy"
     elif (happy == 0 and sad == 1):
