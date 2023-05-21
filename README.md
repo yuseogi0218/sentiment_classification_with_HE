@@ -25,7 +25,7 @@ diary posted on the web service
 ### Utilization
 - for personal users, users can protect their personal information and to understand and
 manage their emotional state.
-### Usage of Homomorphic Encryption
+### [Usage of Homomorphic Encryption](https://github.com/yuseogi0218/sentiment_classification_with_HE/blob/main/sentiment_diary/diary/sentiment_classification.py)
 - The service encrypts user's diary in web service using a homomorphic encryption because diaries are sensitive personal information
 - It is used to protect user’s records within the emotional analysis service.
 
